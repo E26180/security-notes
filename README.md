@@ -7,6 +7,7 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 
 | Date | Lab | Topics |
 |------|-----|--------|
+| 13 Oct 2026 | [Network Lab #3 – Subnetting, DHCP and DNS on a real host](labs/2026-10-13-network-lab-3-subnetting-dhcp-dns.md) | CIDR and subnet maths, default gateway, DHCP (DORA, lease options), DNS resolvers (`ip`, `resolvectl`, `nmcli`, `dig`) |
 | 11 Oct 2026 | [Network Lab #2 – UFW firewall: blocking and allowing a web server](labs/2026-10-11-network-lab-2-ufw-firewall.md) | Default deny, UFW rules and logs, dropped SYN and TCP retransmission in Wireshark |
 | 9 Oct 2026 | [Network Lab #1 – HTTP server and TCP handshake in Wireshark](labs/2026-10-09-network-lab-1-http-wireshark.md) | IP, ports, HTTP, TCP three-way handshake, Wireshark |
 
