@@ -15,6 +15,7 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 
 | Date | Notes | Topics |
 |------|-------|--------|
+| 14 Oct 2026 | [TryHackMe: DNS in Detail and HTTP in Detail](notes/2026-10-14-tryhackme-dns-http-in-detail.md) | Domain structure, DNS records and lookup chain, `nslookup`; URLs, HTTP methods, status codes, headers, cookies |
 | 11 Oct 2026 | [Linux and networking commands](notes/2026-10-11-linux-networking-commands.md) | Files, networking (`ip`, `ss`, `curl`), logs (`grep`, `journalctl`), `sudo`, `ufw` |
 | 10 Oct 2026 | [TryHackMe Pre Security](notes/2026-10-10-tryhackme-pre-security.md) | Binary/hex, ASCII/Unicode, IP vs MAC, routers/switches, LAN |
 
