@@ -1,58 +1,167 @@
-# 11 Oct 2026 – Linux and networking commands
+# Linux, networking and Git commands
 
-Commands I practised while doing [Network Lab #2](../labs/2026-10-11-network-lab-2-ufw-firewall.md), with a short note on what each one does.
+*First written 11 Oct 2026 · updated 16 Oct 2026*
 
-## Where am I, who am I?
+My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md). Every command here is one I have actually used, with a short note on what it does.
+
+## System and user info
 
 | Command | What it does |
 |---------|--------------|
-| `whoami` | Shows the current user |
-| `pwd` | Prints the current (working) directory |
+| `whoami` | Shows which user I am logged in as |
+| `hostname` | Shows the machine's name |
 | `hostname -I` | Shows the machine's IP address(es) |
+| `uname -a` | Shows kernel and system information |
+| `date` | Shows the current date and time |
+
+## Moving around
+
+| Command | What it does |
+|---------|--------------|
+| `pwd` | Prints the current (working) directory |
+| `ls` | Lists files and folders |
+| `ls -l` | Long list with permissions, owner, size and date |
+| `ls -a` | Includes hidden files (names starting with `.`) |
+| `cd folder` | Goes into a folder |
+| `cd ..` | Goes up one level |
+| `cd ~` | Goes to my home directory |
+| `cd /` | Goes to the root of the filesystem |
 
 ## Files and folders
 
 | Command | What it does |
 |---------|--------------|
-| `ls` | Lists files in a directory |
-| `cd <dir>` | Changes directory |
-| `mkdir <dir>` | Creates a directory |
-| `touch <file>` | Creates an empty file (or updates its timestamp) |
-| `cat <file>` | Prints a file's contents |
-| `nano <file>` | Opens a simple text editor in the terminal |
-| `cp <src> <dst>` | Copies a file |
-| `mv <src> <dst>` | Moves or renames a file |
-| `rm <file>` | Deletes a file (no recycle bin, so be careful) |
+| `mkdir folder` | Creates a folder |
+| `touch file.txt` | Creates an empty file (or updates its timestamp) |
+| `echo "Hello" > file.txt` | Writes to a file and **overwrites** what was there |
+| `echo "Hello" >> file.txt` | **Appends** to the end of a file |
+| `cat file.txt` | Prints a file's contents |
+| `less file.txt` | Reads a long file page by page (`q` to quit) |
+| `head file.txt` | Shows the first lines of a file |
+| `tail file.txt` | Shows the last lines of a file |
+| `tail -n 20 file.txt` | Shows the last 20 lines |
+| `nano file.txt` | Opens the file in the Nano editor |
+| `cp file.txt copy.txt` | Copies a file |
+| `cp -r folder backup` | Copies a folder and everything inside it |
+| `mv old.txt new.txt` | Renames a file |
+| `mv file.txt folder/` | Moves a file into a folder |
+| `rm file.txt` | Deletes a file (no recycle bin) |
+| `rm -i file.txt` | Asks for confirmation before deleting |
+| `rmdir folder` | Deletes an **empty** folder |
+| `rm -r folder` | Deletes a folder and its contents (be careful) |
+| `chmod +x script.sh` | Makes a file executable |
+
+## Terminal basics
+
+| Command / key | What it does |
+|---------------|--------------|
+| `clear` or `Ctrl + L` | Clears the screen |
+| `history` | Shows previously used commands |
+| `Ctrl + C` | Stops the running command |
+| `exit` | Leaves the current shell |
+| `logout` | Leaves a login shell |
+| `sudo <command>` | Runs a command with administrator (root) privileges |
+
+## Searching and pipes
+
+| Command | What it does |
+|---------|--------------|
+| `grep "text" file.txt` | Finds lines containing a pattern |
+| `cmd1 \| cmd2` | Pipe: sends the output of one command into another |
+| `... \| tail -n 20` | Shows only the last 20 lines of a command's output |
+
+## Processes
+
+| Command | What it does |
+|---------|--------------|
+| `ps` | Processes in the current shell |
+| `ps aux` | All processes on the system, with details |
+| `top` | Live view of processes and CPU/memory use |
+| `kill PID` | Stops the process with that ID |
 
 ## Networking
 
 | Command | What it does |
 |---------|--------------|
-| `ip addr` | Shows network interfaces and their IP addresses |
-| `ip route` | Shows the routing table, including the default gateway |
-| `ping <host>` | Tests whether a host is reachable (ICMP) |
-| `ss` | Shows sockets, e.g. which ports are listening (`ss -tuln`) |
-| `curl <url>` | Sends an HTTP request from the terminal |
+| `ip addr` | Interfaces, IP addresses and CIDR prefix |
+| `ip route` | Routing table and default gateway |
+| `ip neigh` | Neighbour (ARP) table: IP ↔ MAC mappings |
+| `sudo ip neigh flush all` | Clears the neighbour cache |
+| `arp -a` | ARP table (also works on macOS) |
+| `ping google.com` | Tests whether a host is reachable (ICMP) |
+| `ping -c 4 google.com` | Sends exactly 4 pings |
+| `ping -c 1 192.168.64.1` | One ping to the gateway; triggers ARP if needed |
+| `ss -ltnp` | Listening TCP ports and the process using them |
+| `ss -ltnp \| grep 8000` | Only the listener on port 8000 |
+| `curl http://192.168.64.2:8000` | Sends an HTTP request from the terminal |
+| `python3 -m http.server 8000` | Serves the current folder over HTTP on port 8000 |
+| `python3 -m http.server 8000 --bind 0.0.0.0` | Same, listening on all interfaces |
 
-## Searching and logs
+## DNS and DHCP
 
 | Command | What it does |
 |---------|--------------|
-| `grep <pattern>` | Finds lines that match a pattern |
-| `tail <file>` | Shows the end of a file (`tail -f` follows it live) |
-| `cmd1 \| cmd2` | Pipe: sends the output of one command into another |
-| `journalctl` | Reads system logs from systemd |
+| `which resolvectl` | Shows where a command is installed (checks it exists) |
+| `resolvectl status` | DNS servers and resolver settings in use |
+| `nslookup google.com` | Resolves a name and shows which DNS server answered |
+| `dig google.com` | Detailed DNS answer: records, TTL, query time |
+| `nmcli device status` | Network devices managed by NetworkManager |
+| `nmcli device show enp0s1` | IP, gateway, DNS and routes for one interface |
+| `nmcli connection show netplan-enp0s1` | Details of a connection profile |
+| `nmcli -f ipv4.method connection show netplan-enp0s1` | Shows whether IPv4 is automatic (DHCP) or manual |
+| `nmcli -f DHCP4 device show enp0s1` | What DHCP handed out: IP, mask, gateway, DNS, lease time |
 
-## Admin and firewall
+## Packet capture
 
 | Command | What it does |
 |---------|--------------|
-| `sudo <cmd>` | Runs a command with administrator (root) privileges |
-| `sudo ufw status` | Shows whether the firewall is active and its rules |
-| `sudo ufw default deny incoming` | Blocks all inbound traffic by default |
-| `sudo ufw allow 8000/tcp` | Allows inbound TCP traffic on port 8000 |
+| `sudo tcpdump -i enp0s1 arp` | Captures only ARP packets on `enp0s1` |
+| `wireshark` | Opens Wireshark from the terminal |
+
+## Firewall (UFW) and logs
+
+| Command | What it does |
+|---------|--------------|
+| `sudo ufw status` | Is the firewall on, and which rules exist |
+| `sudo ufw status verbose` | Same, plus the default policies |
 | `sudo ufw enable` / `disable` | Turns the firewall on or off |
+| `sudo ufw default deny incoming` | Blocks incoming connections by default |
+| `sudo ufw default allow outgoing` | Allows outgoing connections by default |
+| `sudo ufw allow 8000/tcp` | Allows incoming TCP on port 8000 |
+| `sudo ufw delete allow 8000/tcp` | Removes that allow rule |
+| `sudo journalctl -k` | Kernel logs |
+| `sudo journalctl -k \| grep UFW \| tail -n 20` | The last 20 UFW firewall log lines |
+
+## Git
+
+| Command | What it does |
+|---------|--------------|
+| `git --version` | Shows the installed Git version |
+| `git init` | Turns the current folder into a repository |
+| `git clone <repo-url>` | Downloads a remote repository |
+| `git status` | Shows changed, staged and untracked files |
+| `git add file.txt` / `git add .` | Stages one file / all changes |
+| `git commit -m "message"` | Saves the staged changes as a commit |
+| `git commit --amend` | Edits the last commit |
+| `git log` / `git log --oneline` | Commit history (full / short) |
+| `git diff` | Changes that are not staged yet |
+| `git diff --staged` | Changes that are staged |
+| `git branch` | Lists branches |
+| `git branch new-branch` | Creates a branch |
+| `git switch new-branch` | Moves to a branch |
+| `git switch -c new-branch` | Creates a branch and moves to it |
+| `git branch -d new-branch` | Deletes a branch |
+| `git remote -v` | Shows the linked remote repositories |
+| `git remote add origin <repo-url>` | Links the local repo to GitHub |
+| `git push` / `git push origin main` | Sends local commits to the remote |
+| `git push -u origin main` | First push: also sets up tracking |
+| `git pull` | Downloads remote changes and merges them |
+| `git fetch` | Downloads remote changes without merging |
+| `git rm file.txt` | Deletes a file and stages the deletion |
+| `git rm --cached file.txt` | Stops tracking a file but keeps it on disk |
+
+**My everyday Git flow:** `git status` → `git add .` → `git commit -m "message"` → `git push`
 
 ## Takeaway
 
-Most security work on Linux comes down to a few questions: who am I, where am I, what is running, what is listening, and what do the logs say. These commands answer those questions.
+Most security work on Linux comes down to a few questions: who am I, where am I, what is running, what is listening, who am I talking to, and what do the logs say. These commands answer those questions.
