@@ -1,0 +1,86 @@
+# Project 1 – Network & Firewall Lab
+
+A small home lab I built to learn networking and host security by **testing things myself and watching the traffic**, rather than only reading about them. One Ubuntu virtual machine acts as a server, my Mac acts as the client, and every step is verified with packet captures and command-line tools.
+
+**Status:** ongoing · **Labs so far:** 4 · **Started:** October 2026
+
+## Lab environment
+
+```mermaid
+flowchart LR
+    subgraph Host["macOS host (client)"]
+        C["curl / Safari<br/>Wireshark"]
+        B["bridge100<br/>(UTM virtual bridge)"]
+    end
+    subgraph VM["Ubuntu VM (server) · enp0s1 · 192.168.64.2/24"]
+        W["Python http.server<br/>port 8000"]
+        F["UFW firewall<br/>default deny incoming"]
+        T["tcpdump · ip · nmcli · resolvectl"]
+    end
+    G["Gateway / DHCP / DNS<br/>192.168.64.1"]
+    I(("Internet"))
+
+    C -- "HTTP :8000" --> B
+    B --> F --> W
+    VM -- "DHCP lease, DNS queries,<br/>ARP for the gateway MAC" --> G
+    G --> I
+```
+
+| Component | Details |
+|-----------|---------|
+| Client | macOS host, `curl`, Safari, Wireshark, `arp -a` |
+| Server | Ubuntu VM in UTM, interface `enp0s1`, `192.168.64.2/24` |
+| Gateway / DHCP / DNS | `192.168.64.1` (UTM virtual network) |
+| Service under test | `python3 -m http.server 8000` |
+| Host firewall | UFW |
+
+## What I tested
+
+| Lab | Question I wanted to answer | Key result |
+|-----|-----------------------------|------------|
+| [#1 – HTTP & TCP handshake](../../labs/2026-10-09-network-lab-1-http-wireshark.md) | What does a web request look like on the wire? | `SYN` → `SYN-ACK` → `ACK`, then `GET /` → `200 OK`, all in plaintext |
+| [#2 – UFW firewall](../../labs/2026-10-11-network-lab-2-ufw-firewall.md) | What changes when a host firewall blocks a port? | Blocked: only `SYN` + retransmissions, no reply. Allowed: full handshake + `200 OK`. UFW logs show `SRC`, `DST`, `DPT`, `PROTO` |
+| [#3 – Subnetting, DHCP & DNS](../../labs/2026-10-13-network-lab-3-subnetting-dhcp-dns.md) | Where does the VM's network configuration come from? | DHCP gave IP, mask, gateway, DNS and a 1-hour lease; `127.0.0.53` is only a local DNS stub |
+| [#4 – ARP](../../labs/2026-10-16-network-lab-4-arp.md) | How does the VM find the gateway's MAC address? | Flush cache → ping → ARP Request (broadcast) → ARP Reply (unicast) captured in tcpdump |
+
+## How a single request travels through the lab
+
+```mermaid
+sequenceDiagram
+    participant Mac as Mac (client)
+    participant FW as UFW on VM
+    participant Srv as http.server :8000
+    Mac->>FW: TCP SYN to 192.168.64.2:8000
+    alt port 8000 blocked (default deny)
+        FW--xMac: dropped silently
+        Mac->>FW: SYN retransmission…
+    else port 8000 allowed
+        FW->>Srv: SYN passed
+        Srv-->>Mac: SYN-ACK
+        Mac->>Srv: ACK
+        Mac->>Srv: GET / HTTP/1.1
+        Srv-->>Mac: HTTP/1.1 200 OK + HTML
+    end
+```
+
+## Skills practised
+
+- **Networking:** IP vs MAC, ports, TCP handshake, CIDR and subnetting, default gateway, DHCP (DORA), DNS resolution, ARP
+- **Linux:** `ip addr`, `ip route`, `ip neigh`, `resolvectl`, `nmcli`, `ss`, `journalctl`, `sudo`
+- **Host security:** UFW default-deny policy, allow rules, reading firewall logs, reverting changes safely
+- **Traffic analysis:** Wireshark display filters (`tcp.port == 8000`), `tcpdump` capture filters (`arp`)
+- **Documentation:** a write-up for every lab, including the mistakes I made and corrected
+
+## Security lessons so far
+
+1. **Plain HTTP is readable by anyone on the path** – the reason HTTPS matters.
+2. **A firewall acts before the application**: a dropped port looks like silence, not an error.
+3. **DHCP, DNS and ARP all rely on trust** on the local network, which is exactly why rogue DHCP servers, DNS spoofing and ARP spoofing (MITM) are possible.
+4. **Verify, don't assume**: every conclusion in these labs is backed by a command output or a packet capture.
+
+## Next steps
+
+- Capture DHCP lease renewal (DORA) and DNS query/response in Wireshark
+- Compare UFW `deny` (drop) with `reject` on the wire
+- Add a second VM to test traffic between two hosts on the same subnet
+- Move on to web security basics (OWASP Top 10)
