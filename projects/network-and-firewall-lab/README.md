@@ -2,7 +2,7 @@
 
 A small home lab I built to learn networking and host security by **testing things myself and watching the traffic**, rather than only reading about them. One Ubuntu virtual machine acts as a server, my Mac acts as the client, and every step is verified with packet captures and command-line tools.
 
-**Status:** ongoing · **Labs so far:** 4 · **Started:** October 2026
+**Status:** ongoing · **Labs so far:** 5 · **Started:** October 2026
 
 ## Lab environment
 
@@ -42,6 +42,7 @@ flowchart LR
 | [#2 – UFW firewall](../../labs/2026-10-11-network-lab-2-ufw-firewall.md) | What changes when a host firewall blocks a port? | Blocked: only `SYN` + retransmissions, no reply. Allowed: full handshake + `200 OK`. UFW logs show `SRC`, `DST`, `DPT`, `PROTO` |
 | [#3 – Subnetting, DHCP & DNS](../../labs/2026-10-13-network-lab-3-subnetting-dhcp-dns.md) | Where does the VM's network configuration come from? | DHCP gave IP, mask, gateway, DNS and a 1-hour lease; `127.0.0.53` is only a local DNS stub |
 | [#4 – ARP](../../labs/2026-10-16-network-lab-4-arp.md) | How does the VM find the gateway's MAC address? | Flush cache → ping → ARP Request (broadcast) → ARP Reply (unicast) captured in tcpdump |
+| [#5 – DHCP & DNS capture](../../labs/2026-10-18-network-lab-5-dhcp-dns-capture.md) | Do DHCP and DNS look on the wire like they do in theory? | Only DHCP Request + ACK (the VM reused its previous lease); DNS query/response went `192.168.64.2 → 192.168.64.1` over UDP 53, not to the `127.0.0.53` stub |
 
 ## How a single request travels through the lab
 
@@ -66,9 +67,9 @@ sequenceDiagram
 ## Skills practised
 
 - **Networking:** IP vs MAC, ports, TCP handshake, CIDR and subnetting, default gateway, DHCP (DORA), DNS resolution, ARP
-- **Linux:** `ip addr`, `ip route`, `ip neigh`, `resolvectl`, `nmcli`, `ss`, `journalctl`, `sudo`
+- **Linux:** `ip addr`, `ip route`, `ip neigh`, `resolvectl`, `nmcli`, `dig`, `ss`, `journalctl`, `sudo`
 - **Host security:** UFW default-deny policy, allow rules, reading firewall logs, reverting changes safely
-- **Traffic analysis:** Wireshark display filters (`tcp.port == 8000`), `tcpdump` capture filters (`arp`)
+- **Traffic analysis:** Wireshark display filters (`tcp.port == 8000`, `dhcp`, `dns`), `tcpdump` capture filters (`arp`)
 - **Documentation:** a write-up for every lab, including the mistakes I made and corrected
 
 ## Security lessons so far
@@ -80,7 +81,7 @@ sequenceDiagram
 
 ## Next steps
 
-- Capture DHCP lease renewal (DORA) and DNS query/response in Wireshark
+- Capture a **full** DHCP DORA (Discover and Offer too) from a fresh lease
 - Compare UFW `deny` (drop) with `reject` on the wire
 - Add a second VM to test traffic between two hosts on the same subnet
 - Move on to web security basics (OWASP Top 10)
