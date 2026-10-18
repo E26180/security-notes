@@ -1,6 +1,6 @@
 # Linux, networking and Git commands
 
-*First written 11 Oct 2026 · updated 16 Oct 2026*
+*First written 11 Oct 2026 · updated 18 Oct 2026*
 
 My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md). Every command here is one I have actually used, with a short note on what it does.
 
@@ -61,6 +61,7 @@ My personal command reference, built up while doing my [network labs](../project
 | `exit` | Leaves the current shell |
 | `logout` | Leaves a login shell |
 | `sudo <command>` | Runs a command with administrator (root) privileges |
+| `command -v dhclient` | Checks whether a command is installed (prints its path; no output = not installed) |
 
 ## Searching and pipes
 
@@ -110,6 +111,8 @@ My personal command reference, built up while doing my [network labs](../project
 | `nmcli connection show netplan-enp0s1` | Details of a connection profile |
 | `nmcli -f ipv4.method connection show netplan-enp0s1` | Shows whether IPv4 is automatic (DHCP) or manual |
 | `nmcli -f DHCP4 device show enp0s1` | What DHCP handed out: IP, mask, gateway, DNS, lease time |
+| `sudo nmcli connection down netplan-enp0s1` | Takes the network connection down |
+| `sudo nmcli connection up netplan-enp0s1` | Brings it back up (the VM talks to the DHCP server again) |
 
 ## Packet capture
 
@@ -117,6 +120,9 @@ My personal command reference, built up while doing my [network labs](../project
 |---------|--------------|
 | `sudo tcpdump -i enp0s1 arp` | Captures only ARP packets on `enp0s1` |
 | `wireshark` | Opens Wireshark from the terminal |
+| Wireshark filter `tcp.port == 8000` | Shows only traffic to/from port 8000 |
+| Wireshark filter `dhcp` | Shows only DHCP packets (Discover, Offer, Request, ACK) |
+| Wireshark filter `dns` | Shows only DNS queries and responses |
 
 ## Firewall (UFW) and logs
 
