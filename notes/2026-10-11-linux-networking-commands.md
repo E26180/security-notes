@@ -1,8 +1,8 @@
 # Linux, networking and Git commands
 
-*First written 11 Oct 2026 · updated 18 Oct 2026*
+*First written 11 Oct 2026 · updated 19 Oct 2026*
 
-My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md). Every command here is one I have actually used, with a short note on what it does.
+My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md) and [Linux labs](../labs/2026-10-19-linux-lab-1-users-groups-permissions.md). Every command here is one I have actually used, with a short note on what it does.
 
 ## System and user info
 
@@ -70,6 +70,20 @@ My personal command reference, built up while doing my [network labs](../project
 | `grep "text" file.txt` | Finds lines containing a pattern |
 | `cmd1 \| cmd2` | Pipe: sends the output of one command into another |
 | `... \| tail -n 20` | Shows only the last 20 lines of a command's output |
+
+## Users, groups and permissions
+
+| Command | What it does |
+|---------|--------------|
+| `groups` | Groups the current user belongs to |
+| `groups labuser` | Groups of another user |
+| `id labuser` | UID, GID and groups of a user |
+| `chmod g-w file.txt` | Removes write permission from the group (symbolic form) |
+| `chmod 640 file.txt` | Sets `rw-r-----` (numeric form: r=4, w=2, x=1) |
+| `sudo chown user:group file.txt` | Changes the owner and group of a file |
+| `sudo useradd -m labuser` | Creates a user with a home directory |
+| `sudo -u labuser <command>` | Runs a command as another user |
+| `sudo userdel -r labuser` | Deletes a user and their home directory |
 
 ## Processes
 
