@@ -1,8 +1,8 @@
 # Linux, networking and Git commands
 
-*First written 11 Oct 2026 · updated 19 Oct 2026*
+*First written 11 Oct 2026 · updated 22 Oct 2026*
 
-My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md) and [Linux labs](../labs/2026-10-19-linux-lab-1-users-groups-permissions.md). Every command here is one I have actually used, with a short note on what it does.
+My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md) and [Linux labs](../labs/2026-10-19-linux-lab-1-users-groups-permissions.md), plus the Windows equivalents from my [Windows lab](../labs/2026-10-22-windows-lab-1-networking-and-privileges.md). Every command here is one I have actually used, with a short note on what it does.
 
 ## System and user info
 
@@ -181,6 +181,21 @@ My personal command reference, built up while doing my [network labs](../project
 | `git rm --cached file.txt` | Stops tracking a file but keeps it on disk |
 
 **My everyday Git flow:** `git status` → `git add .` → `git commit -m "message"` → `git push`
+
+## Windows equivalents
+
+| Windows (CMD) | What it does | Linux equivalent |
+|---------------|--------------|------------------|
+| `ipconfig /all` | IP, mask, gateway, DHCP, DNS and MAC of every interface | `ip addr`, `ip route`, `nmcli device show` |
+| `ping host` | Reachability test (4 packets by default) | `ping -c 4 host` |
+| `tracert host` | Routers on the path, using increasing TTL | `traceroute` / `tracepath` |
+| `nslookup host` | DNS lookup and which resolver answered | `dig`, `nslookup` |
+| `netstat -ano` | All connections and listening ports, numeric, with PID | `ss -tanp` / `ss -ltnp` |
+| `whoami` | Current user as `COMPUTER\user` | `whoami` |
+| `net user` | Local user accounts | `/etc/passwd`, `id user` |
+| `net localgroup administrators` | Members of the Administrators group | `groups` (look for `sudo`) |
+| "Run as administrator" (UAC) | Runs a program with full admin rights | `sudo <command>` |
+| `net session` | Admin-only command, handy to check whether CMD is elevated | – |
 
 ## Takeaway
 
