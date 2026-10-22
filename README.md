@@ -13,6 +13,7 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 
 | Date | Lab | Topics |
 |------|-----|--------|
+| 22 Oct 2026 | [Windows Lab #1 – Networking commands, users and UAC](labs/2026-10-22-windows-lab-1-networking-and-privileges.md) | `ipconfig /all`, `ping`, `tracert` (TTL), `nslookup` (A/AAAA, non-authoritative), `netstat -ano` and TCP states, local users and Administrators group, UAC elevation vs `sudo` |
 | 19 Oct 2026 | [Linux Lab #1 – Users, groups and file permissions](labs/2026-10-19-linux-lab-1-users-groups-permissions.md) | Owner/Group/Others, symbolic and numeric `chmod`, `chown`, UID/GID, testing access as a second user with `sudo -u`, privileged groups, orphaned files |
 | 18 Oct 2026 | [Network Lab #5 – DHCP and DNS on the wire](labs/2026-10-18-network-lab-5-dhcp-dns-capture.md) | DHCP Request/ACK without full DORA, DNS query/response in Wireshark, `127.0.0.53` stub vs real resolver, rogue DHCP and DNS spoofing |
 | 16 Oct 2026 | [Network Lab #4 – ARP: from IP address to MAC address](labs/2026-10-16-network-lab-4-arp.md) | ARP request/reply, neighbour cache states, `ip neigh`, `tcpdump arp`, ARP spoofing and defences |
@@ -25,11 +26,11 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 | Date | Notes | Topics |
 |------|-------|--------|
 | 14 Oct 2026 | [TryHackMe: DNS in Detail and HTTP in Detail](notes/2026-10-14-tryhackme-dns-http-in-detail.md) | Domain structure, DNS records and lookup chain, `nslookup`; URLs, HTTP methods, status codes, headers, cookies |
-| 11 Oct 2026 (updated 19 Oct) | [Linux, networking and Git commands](notes/2026-10-11-linux-networking-commands.md) | Files, users/groups/permissions, processes, networking (`ip`, `ss`, `curl`), DNS/DHCP (`dig`, `nmcli`), ARP, `tcpdump`, Wireshark filters, UFW and logs, Git workflow |
+| 11 Oct 2026 (updated 22 Oct) | [Linux, networking and Git commands](notes/2026-10-11-linux-networking-commands.md) | Windows CMD equivalents, files, users/groups/permissions, processes, networking (`ip`, `ss`, `curl`), DNS/DHCP (`dig`, `nmcli`), ARP, `tcpdump`, Wireshark filters, UFW and logs, Git workflow |
 | 10 Oct 2026 | [TryHackMe Pre Security](notes/2026-10-10-tryhackme-pre-security.md) | Binary/hex, ASCII/Unicode, IP vs MAC, routers/switches, LAN |
 
 ## Current focus
 
-Networking fundamentals → Linux (users, permissions, processes, services) → web security (OWASP Top 10)
+Networking fundamentals (routing and traceroute next) → Linux and Windows (users, permissions, processes, services) → web security (OWASP Top 10)
 
 *Notes only – no flags or room answers from TryHackMe.*
