@@ -106,6 +106,9 @@ My personal command reference, built up while doing my [network labs](../project
 | `ping google.com` | Tests whether a host is reachable (ICMP) |
 | `ping -c 4 google.com` | Sends exactly 4 pings |
 | `ping -c 1 192.168.64.1` | One ping to the gateway; triggers ARP if needed |
+| `tracepath google.com` | Traces the route with UDP probes (no root needed); `no reply` = that router did not answer |
+| `sudo apt install traceroute` | Installs traceroute |
+| `traceroute -I google.com` | Traces the route with ICMP Echo probes (TTL 1, 2, 3 …) |
 | `ss -ltnp` | Listening TCP ports and the process using them |
 | `ss -ltnp \| grep 8000` | Only the listener on port 8000 |
 | `curl http://192.168.64.2:8000` | Sends an HTTP request from the terminal |
@@ -137,6 +140,7 @@ My personal command reference, built up while doing my [network labs](../project
 | Wireshark filter `tcp.port == 8000` | Shows only traffic to/from port 8000 |
 | Wireshark filter `dhcp` | Shows only DHCP packets (Discover, Offer, Request, ACK) |
 | Wireshark filter `dns` | Shows only DNS queries and responses |
+| Wireshark filter `icmp` | Shows only ICMP: Echo Request/Reply and Time Exceeded (Type 11) |
 
 ## Firewall (UFW) and logs
 
