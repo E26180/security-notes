@@ -1,8 +1,8 @@
 # Linux, networking and Git commands
 
-*First written 11 Oct 2026 · updated 22 Oct 2026*
+*First written 11 Oct 2026 · updated 27 Oct 2026*
 
-My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md) and [Linux labs](../labs/2026-10-19-linux-lab-1-users-groups-permissions.md), plus the Windows equivalents from my [Windows lab](../labs/2026-10-22-windows-lab-1-networking-and-privileges.md). Every command here is one I have actually used, with a short note on what it does.
+My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md) and [Linux labs](../labs/2026-10-27-linux-lab-2-processes-services-logs.md), plus the Windows equivalents from my [Windows lab](../labs/2026-10-22-windows-lab-1-networking-and-privileges.md). Every command here is one I have actually used, with a short note on what it does.
 
 ## System and user info
 
@@ -93,6 +93,18 @@ My personal command reference, built up while doing my [network labs](../project
 | `ps aux` | All processes on the system, with details |
 | `top` | Live view of processes and CPU/memory use |
 | `kill PID` | Stops the process with that ID |
+| `command &` | Runs a command in the background and prints its PID |
+| `ps aux \| grep '[s]leep 300'` | Finds a process without also matching the `grep` itself |
+
+## Services and logs (systemd)
+
+| Command | What it does |
+|---------|--------------|
+| `systemctl status cron` | Is the service running (`active`) and does it start at boot (`enabled`)? |
+| `sudo systemctl stop cron` / `start cron` | Stops or starts the service now |
+| `sudo systemctl enable cron` / `disable cron` | Starts it automatically at boot (or not) |
+| `journalctl -u cron` | Logs of one service only |
+| `journalctl -p err -b` | Only error-level messages from the current boot |
 
 ## Networking
 
