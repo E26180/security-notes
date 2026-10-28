@@ -1,8 +1,8 @@
 # Linux, networking and Git commands
 
-*First written 11 Oct 2026 · updated 27 Oct 2026*
+*First written 11 Oct 2026 · updated 28 Oct 2026*
 
-My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md) and [Linux labs](../labs/2026-10-27-linux-lab-2-processes-services-logs.md), plus the Windows equivalents from my [Windows lab](../labs/2026-10-22-windows-lab-1-networking-and-privileges.md). Every command here is one I have actually used, with a short note on what it does.
+My personal command reference, built up while doing my [network labs](../projects/network-and-firewall-lab/README.md) and [Linux labs](../labs/2026-10-27-linux-lab-2-processes-services-logs.md), plus the Windows equivalents from my [Windows labs](../labs/2026-10-28-windows-lab-2-services-event-logs-uac.md). Every command here is one I have actually used, with a short note on what it does.
 
 ## System and user info
 
@@ -212,6 +212,12 @@ My personal command reference, built up while doing my [network labs](../project
 | `net localgroup administrators` | Members of the Administrators group | `groups` (look for `sudo`) |
 | "Run as administrator" (UAC) | Runs a program with full admin rights | `sudo <command>` |
 | `net session` | Admin-only command, handy to check whether CMD is elevated | – |
+| `sc query wuauserv` | Current state of a service (e.g. `RUNNING`) | `systemctl status` |
+| `sc qc wuauserv` | Service configuration, incl. `START_TYPE` | `systemctl is-enabled` |
+| Event Viewer → Security, filter `4624,4625` | Successful / failed logons | `journalctl`, `/var/log/auth.log` |
+| `net user name * /add` / `net user name /delete` | Create (password prompted) / delete a local user | `useradd -m` / `userdel -r` |
+| `netstat -ano \| findstr ESTABLISHED` | Only active TCP connections | `ss -tn state established` |
+| `tasklist /FI "PID eq 1234"` | Which program owns a PID | `ps -p 1234` |
 
 ## Takeaway
 
