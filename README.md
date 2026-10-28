@@ -13,6 +13,7 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 
 | Date | Lab | Topics |
 |------|-----|--------|
+| 28 Oct 2026 | [Windows Lab #2 – Services, Security event logs, Standard User and PID tracking](labs/2026-10-28-windows-lab-2-services-event-logs-uac.md) | `sc query` / `sc qc` (state vs start type), Event Viewer 4624/4625 with Logon Type and Sub Status, Standard User and UAC credential prompt, `netstat -ano` → PID → `tasklist`, brute-force detection |
 | 27 Oct 2026 | [Linux Lab #2 – Processes, services and system logs](labs/2026-10-27-linux-lab-2-processes-services-logs.md) | `ps aux`, `top`, background jobs and `kill`, systemd services with `systemctl` (start/stop vs enable), new PID after restart, `journalctl` filters by service, priority and boot, persistence and logs as evidence |
 | 22 Oct 2026 | [Network Lab #6 – Routing, traceroute and TTL](labs/2026-10-22-network-lab-6-routing-traceroute-ttl.md) | `ip route`, hops, `tracepath` vs `traceroute -I`, TTL 1, 2, 3 … in Wireshark, ICMP Type 11 (Time Exceeded) vs Type 0 (Echo Reply), ICMP filtering |
 | 22 Oct 2026 | [Windows Lab #1 – Networking commands, users and UAC](labs/2026-10-22-windows-lab-1-networking-and-privileges.md) | `ipconfig /all`, `ping`, `tracert` (TTL), `nslookup` (A/AAAA, non-authoritative), `netstat -ano` and TCP states, local users and Administrators group, UAC elevation vs `sudo` |
@@ -28,7 +29,7 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 | Date | Notes | Topics |
 |------|-------|--------|
 | 14 Oct 2026 | [TryHackMe: DNS in Detail and HTTP in Detail](notes/2026-10-14-tryhackme-dns-http-in-detail.md) | Domain structure, DNS records and lookup chain, `nslookup`; URLs, HTTP methods, status codes, headers, cookies |
-| 11 Oct 2026 (updated 27 Oct) | [Linux, networking and Git commands](notes/2026-10-11-linux-networking-commands.md) | Windows CMD equivalents, files, users/groups/permissions, processes, services and logs (`systemctl`, `journalctl`), networking (`ip`, `ss`, `curl`, `traceroute`), DNS/DHCP (`dig`, `nmcli`), ARP, `tcpdump`, Wireshark filters, UFW and logs, Git workflow |
+| 11 Oct 2026 (updated 28 Oct) | [Linux, networking and Git commands](notes/2026-10-11-linux-networking-commands.md) | Windows CMD equivalents, files, users/groups/permissions, processes, services and logs (`systemctl`, `journalctl`), networking (`ip`, `ss`, `curl`, `traceroute`), DNS/DHCP (`dig`, `nmcli`), ARP, `tcpdump`, Wireshark filters, UFW and logs, Git workflow |
 | 10 Oct 2026 | [TryHackMe Pre Security](notes/2026-10-10-tryhackme-pre-security.md) | Binary/hex, ASCII/Unicode, IP vs MAC, routers/switches, LAN |
 
 ## Current focus
