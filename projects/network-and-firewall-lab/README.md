@@ -2,7 +2,7 @@
 
 A small home lab I built to learn networking and host security by **testing things myself and watching the traffic**, rather than only reading about them. One Ubuntu virtual machine acts as a server, my Mac acts as the client, and every step is verified with packet captures and command-line tools.
 
-**Status:** ongoing · **Labs so far:** 6 · **Started:** October 2026
+**Status:** ongoing · **Labs so far:** 7 · **Started:** October 2026
 
 ## Lab environment
 
@@ -44,6 +44,7 @@ flowchart LR
 | [#4 – ARP](../../labs/2026-10-16-network-lab-4-arp.md) | How does the VM find the gateway's MAC address? | Flush cache → ping → ARP Request (broadcast) → ARP Reply (unicast) captured in tcpdump |
 | [#5 – DHCP & DNS capture](../../labs/2026-10-18-network-lab-5-dhcp-dns-capture.md) | Do DHCP and DNS look on the wire like they do in theory? | Only DHCP Request + ACK (the VM reused its previous lease); DNS query/response went `192.168.64.2 → 192.168.64.1` over UDP 53, not to the `127.0.0.53` stub |
 | [#6 – Routing, traceroute & TTL](../../labs/2026-10-22-network-lab-6-routing-traceroute-ttl.md) | How does traceroute discover the path to a remote host? | Probes with TTL 1, 2, 3 … ; each router answers ICMP Type 11 (Time Exceeded), the destination answers Type 0 (Echo Reply). `tracepath` (UDP) hit `no reply`, `traceroute -I` (ICMP) reached Google |
+| [#7 – TCP traceroute & UFW deny vs reject](../../labs/2026-10-30-network-lab-7-tcp-traceroute-and-ufw-deny-reject.md) | Does the probe type change what traceroute shows, and how does a `deny` look different from a `reject`? | `traceroute -T -p 443` needs `sudo`; TCP SYN probes get ICMP Time Exceeded from routers and SYN/ACK from the destination. `deny` → client times out, `reject` → immediate `Connection refused`; `UFW BLOCK` logs show `SRC`, `DST`, `PROTO`, `SPT`, `DPT` and repeated SYNs |
 
 ## How a single request travels through the lab
 
@@ -68,8 +69,8 @@ sequenceDiagram
 ## Skills practised
 
 - **Networking:** IP vs MAC, ports, TCP handshake, CIDR and subnetting, default gateway, DHCP (DORA), DNS resolution, ARP, routing tables, hops and TTL
-- **Linux:** `ip addr`, `ip route`, `ip neigh`, `resolvectl`, `nmcli`, `dig`, `ss`, `tracepath`, `traceroute`, `journalctl`, `sudo`
-- **Host security:** UFW default-deny policy, allow rules, reading firewall logs, reverting changes safely
+- **Linux:** `ip addr`, `ip route`, `ip neigh`, `resolvectl`, `nmcli`, `dig`, `ss`, `tracepath`, `traceroute` (UDP, ICMP, TCP), `nc`, `journalctl`, `sudo`
+- **Host security:** UFW default-deny policy, allow, deny and reject rules, numbered rules, reading firewall logs, reverting changes safely
 - **Traffic analysis:** Wireshark display filters (`tcp.port == 8000`, `dhcp`, `dns`, `icmp`), `tcpdump` capture filters (`arp`)
 - **Documentation:** a write-up for every lab, including the mistakes I made and corrected
 
@@ -79,12 +80,13 @@ sequenceDiagram
 2. **A firewall acts before the application**: a dropped port looks like silence, not an error.
 3. **DHCP, DNS and ARP all rely on trust** on the local network, which is exactly why rogue DHCP servers, DNS spoofing and ARP spoofing (MITM) are possible.
 4. **ICMP reveals the network map**: traceroute exposes internal hops and ISP routers, which is why many networks filter ICMP and why `no reply` is common.
-5. **Verify, don't assume**: every conclusion in these labs is backed by a command output or a packet capture.
+5. **Drop or reject is a design choice**: a dropped port gives a scanner no information but leaves legitimate clients waiting; a rejected port fails fast but confirms the host is alive.
+6. **Verify, don't assume**: every conclusion in these labs is backed by a command output or a packet capture.
 
 ## Next steps
 
 - Capture a **full** DHCP DORA (Discover and Offer too) from a fresh lease
-- Compare UFW `deny` (drop) with `reject` on the wire
-- Compare UDP, ICMP and TCP (`traceroute -T`) probes through a firewall
+- Capture the `reject` case in Wireshark and look at the TCP RST packet
+- Scan my **own** VM to compare how a dropped port and a rejected port look to a scanner
 - Add a second VM to test traffic between two hosts on the same subnet
 - Move on to web security basics (OWASP Top 10)
