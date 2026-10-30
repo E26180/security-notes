@@ -7,12 +7,13 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 
 | Project | Summary |
 |---------|---------|
-| [Project 1 – Network & Firewall Lab](projects/network-and-firewall-lab/README.md) | Ubuntu VM + Mac home lab: HTTP and TCP, UFW firewall, subnetting/DHCP/DNS, ARP and DHCP/DNS packet captures, routing and traceroute, with diagrams |
+| [Project 1 – Network & Firewall Lab](projects/network-and-firewall-lab/README.md) | Ubuntu VM + Mac home lab: HTTP and TCP, UFW firewall, subnetting/DHCP/DNS, ARP and DHCP/DNS packet captures, routing and traceroute (UDP, ICMP, TCP), UFW deny vs reject, with diagrams |
 
 ## Labs
 
 | Date | Lab | Topics |
 |------|-----|--------|
+| 30 Oct 2026 | [Network Lab #7 – TCP traceroute and UFW deny vs reject](labs/2026-10-30-network-lab-7-tcp-traceroute-and-ufw-deny-reject.md) | `traceroute -T -p 443` (needs root) vs UDP and ICMP probes, TCP SYN probes, Time Exceeded and SYN/ACK in Wireshark, UFW `deny` (timeout) vs `reject` (`Connection refused`), `ufw status numbered`, reading `UFW BLOCK` logs |
 | 28 Oct 2026 | [Windows Lab #2 – Services, Security event logs, Standard User and PID tracking](labs/2026-10-28-windows-lab-2-services-event-logs-uac.md) | `sc query` / `sc qc` (state vs start type), Event Viewer 4624/4625 with Logon Type and Sub Status, Standard User and UAC credential prompt, `netstat -ano` → PID → `tasklist`, brute-force detection |
 | 27 Oct 2026 | [Linux Lab #2 – Processes, services and system logs](labs/2026-10-27-linux-lab-2-processes-services-logs.md) | `ps aux`, `top`, background jobs and `kill`, systemd services with `systemctl` (start/stop vs enable), new PID after restart, `journalctl` filters by service, priority and boot, persistence and logs as evidence |
 | 22 Oct 2026 | [Network Lab #6 – Routing, traceroute and TTL](labs/2026-10-22-network-lab-6-routing-traceroute-ttl.md) | `ip route`, hops, `tracepath` vs `traceroute -I`, TTL 1, 2, 3 … in Wireshark, ICMP Type 11 (Time Exceeded) vs Type 0 (Echo Reply), ICMP filtering |
