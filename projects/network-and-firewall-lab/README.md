@@ -2,7 +2,7 @@
 
 A small home lab I built to learn networking and host security by **testing things myself and watching the traffic**, rather than only reading about them. One Ubuntu virtual machine acts as a server, my Mac acts as the client, and every step is verified with packet captures and command-line tools.
 
-**Status:** ongoing · **Labs so far:** 8 · **Started:** October 2026
+**Status:** ongoing · **Labs so far:** 9 · **Started:** October 2026
 
 ## Lab environment
 
@@ -46,6 +46,7 @@ flowchart LR
 | [#6 – Routing, traceroute & TTL](../../labs/2026-10-22-network-lab-6-routing-traceroute-ttl.md) | How does traceroute discover the path to a remote host? | Probes with TTL 1, 2, 3 … ; each router answers ICMP Type 11 (Time Exceeded), the destination answers Type 0 (Echo Reply). `tracepath` (UDP) hit `no reply`, `traceroute -I` (ICMP) reached Google |
 | [#7 – TCP traceroute & UFW deny vs reject](../../labs/2026-10-30-network-lab-7-tcp-traceroute-and-ufw-deny-reject.md) | Does the probe type change what traceroute shows, and how does a `deny` look different from a `reject`? | `traceroute -T -p 443` needs `sudo`; TCP SYN probes get ICMP Time Exceeded from routers and SYN/ACK from the destination. `deny` → client times out, `reject` → immediate `Connection refused`; `UFW BLOCK` logs show `SRC`, `DST`, `PROTO`, `SPT`, `DPT` and repeated SYNs |
 | [#8 – SSH, UFW port 22 & auth logs](../../labs/2026-10-31-network-lab-8-ssh-openssh-ufw-auth-logs.md) | How does a real service on port 22 look through the firewall and in the logs? | `openssh-server` listens through `ssh.socket`; Mac → VM login works with UFW enabled once `22/tcp` is allowed; `journalctl -u ssh` shows `Failed password` then `Accepted password` with user and source IP |
+| [#9 – SSH key login, SSH handshake & UFW deny vs reject on port 22](../../labs/2026-11-07-network-lab-9-ssh-key-login-wireshark-ufw-deny-reject.md) | What does a key login look like, what does the SSH handshake reveal on the wire, and how do `deny` and `reject` behave on port 22? | `ssh-keygen` + `ssh-copy-id` → `Accepted publickey` with key fingerprint in `journalctl`; Wireshark shows the TCP handshake, a plaintext `SSH-2.0-OpenSSH` banner, key exchange, then only `Encrypted packet`; `deny` → `Operation timed out`, `reject` → `Connection refused`; lab keys, rules and services cleaned up afterwards |
 
 ## How a single request travels through the lab
 
@@ -70,9 +71,9 @@ sequenceDiagram
 ## Skills practised
 
 - **Networking:** IP vs MAC, ports, TCP handshake, CIDR and subnetting, default gateway, DHCP (DORA), DNS resolution, ARP, routing tables, hops and TTL
-- **Linux:** `ip addr`, `ip route`, `ip neigh`, `resolvectl`, `nmcli`, `dig`, `ss`, `tracepath`, `traceroute` (UDP, ICMP, TCP), `nc`, `journalctl`, `ssh`, `systemctl`, `sudo`
-- **Host security:** UFW default-deny policy, allow, deny and reject rules, numbered rules, allowing SSH, reading firewall and SSH authentication logs, reverting changes safely
-- **Traffic analysis:** Wireshark display filters (`tcp.port == 8000`, `dhcp`, `dns`, `icmp`), `tcpdump` capture filters (`arp`)
+- **Linux:** `ip addr`, `ip route`, `ip neigh`, `resolvectl`, `nmcli`, `dig`, `ss`, `tracepath`, `traceroute` (UDP, ICMP, TCP), `nc`, `journalctl`, `ssh`, `ssh-keygen`, `ssh-copy-id`, `systemctl`, `sudo`
+- **Host security:** UFW default-deny policy, allow, deny and reject rules, numbered rules, allowing SSH, SSH key-based login, reading firewall and SSH authentication logs, deny vs reject on port 22, reverting changes and removing temporary keys safely
+- **Traffic analysis:** Wireshark display filters (`tcp.port == 8000`, `dhcp`, `dns`, `icmp`), `tcpdump` capture filters (`arp`), following a TCP and SSH handshake (`tcp.port == 22`)
 - **Documentation:** a write-up for every lab, including the mistakes I made and corrected
 
 ## Security lessons so far
@@ -84,12 +85,13 @@ sequenceDiagram
 5. **Drop or reject is a design choice**: a dropped port gives a scanner no information but leaves legitimate clients waiting; a rejected port fails fast but confirms the host is alive.
 6. **Verify, don't assume**: every conclusion in these labs is backed by a command output or a packet capture.
 7. **Listening is not the same as reachable**: a service can listen on a port while the firewall blocks it, and failed logins leave evidence in the logs (`Failed password` with the source IP).
+8. **Keys beat passwords, but only if they stay secret**: key login leaves the key fingerprint in the logs, SSH hides the commands but not the metadata (IPs, ports, timing, version banner), and temporary keys, `authorized_keys` lines and rules must be cleaned up afterwards.
 
 ## Next steps
 
 - Capture a **full** DHCP DORA (Discover and Offer too) from a fresh lease
 - Capture the `reject` case in Wireshark and look at the TCP RST packet
-- Capture the SSH handshake in Wireshark and set up key-based login
+- Disable password authentication in `sshd_config` once key login works, and read the failed login in the logs
 - Scan my **own** VM to compare how a dropped port and a rejected port look to a scanner
 - Add a second VM to test traffic between two hosts on the same subnet
 - Move on to web security basics (OWASP Top 10)
