@@ -110,7 +110,7 @@ At the end I returned the lab to its starting state:
 - Removed the `reject` rule for port 22 and set UFW back to `inactive`.
 - Stopped `ssh.service` and `ssh.socket` (both `inactive`). I kept the `openssh-server` package installed.
 - On the VM I checked the contents and the fingerprint in `authorized_keys`, removed the `network-lab9` public key line and deleted the temporary backup file.
-- On the Mac the lab **public** key file was removed. I did **not** confirm at the end that the lab **private** key was deleted too, so this is still open (see *Next*).
+- On the Mac the lab **public** key file was removed. I later also deleted the lab **private** key (`id_ed25519_lab9`) and confirmed with `ls -l ~/.ssh` that the file is gone. The matching entry in `authorized_keys` on the VM was already removed, so the key cleanup is complete.
 
 ## What I observed
 
@@ -122,7 +122,7 @@ At the end I returned the lab to its starting state:
 ## Security angle
 
 - **Keys beat passwords:** an attacker cannot guess a long private key the way they can brute-force a password. The next hardening step, which I have not done, is to disable password authentication in `sshd_config` once a key login works.
-- **The private key is the secret:** it must stay on the client, and a passphrase protects it if the file is stolen. A key that is no longer needed, like this lab key, should be deleted on both sides.
+- **The private key is the secret:** it must stay on the client, and a passphrase protects it if the file is stolen. A key that is no longer needed, like this lab key, should be deleted on both sides, which I did.
 - **`authorized_keys` is an access list:** whoever has a matching private key can log in. Old lines should be removed, and I checked the fingerprint before deleting the line.
 - **What an observer sees:** on the network, SSH hides the commands but not the metadata (IPs, ports, sizes, timing) or the OpenSSH version banner.
 - **Detection:** `Accepted publickey` and the fingerprint in `journalctl` show **which key** was used, which is useful evidence in an investigation.
@@ -155,7 +155,6 @@ At the end I returned the lab to its starting state:
 
 ## Next
 
-- Confirm that the lab **private** key file is deleted on the Mac, and check `ls ~/.ssh` for leftovers.
 - Disable password authentication in `sshd_config` (keep a second session open while testing) and see how a login without a key fails in the logs.
 - Capture the `reject` case in Wireshark and look at the TCP RST packet.
 - Scan my **own** VM to compare how a dropped port and a rejected port look to a scanner.
