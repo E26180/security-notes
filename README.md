@@ -7,12 +7,13 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 
 | Project | Summary |
 |---------|---------|
-| [Project 1 – Network & Firewall Lab](projects/network-and-firewall-lab/README.md) | Ubuntu VM + Mac home lab: HTTP and TCP, UFW firewall, subnetting/DHCP/DNS, ARP and DHCP/DNS packet captures, routing and traceroute (UDP, ICMP, TCP), UFW deny vs reject, SSH and auth logs, with diagrams |
+| [Project 1 – Network & Firewall Lab](projects/network-and-firewall-lab/README.md) | Ubuntu VM + Mac home lab: HTTP and TCP, UFW firewall, subnetting/DHCP/DNS, ARP and DHCP/DNS packet captures, routing and traceroute (UDP, ICMP, TCP), UFW deny vs reject, SSH password and key login, SSH handshake and auth logs, with diagrams |
 
 ## Labs
 
 | Date | Lab | Topics |
 |------|-----|--------|
+| 7 Nov 2026 | [Network Lab #9 – SSH key-based login, SSH handshake in Wireshark and UFW deny vs reject on port 22](labs/2026-11-07-network-lab-9-ssh-key-login-wireshark-ufw-deny-reject.md) | `ssh-keygen -t ed25519`, `ssh-copy-id`, `authorized_keys`, `Accepted publickey` + key fingerprint in `journalctl`, TCP handshake vs SSH key exchange, plaintext version banner vs encrypted packets, UFW `deny` (timeout) vs `reject` (`Connection refused`) on port 22, lab cleanup |
 | 2 Nov 2026 | [Linux Lab #3 – Bash: pipes, redirection and an SSH log report script](labs/2026-11-02-linux-lab-3-bash-pipes-redirection-ssh-logs.md) | `journalctl -u ssh`, `grep`, `awk '{print $11}'`, `sort \| uniq -c`, pipes, redirection (`>` vs `>>`), `chmod +x`, first Bash script (`ssh_failed_report.sh`), counting failed SSH logins per IP |
 | 31 Oct 2026 | [Network Lab #8 – SSH: OpenSSH server, UFW port 22 and authentication logs](labs/2026-10-31-network-lab-8-ssh-openssh-ufw-auth-logs.md) | `openssh-server`, `ssh.socket` (socket activation), `ss -ltnp`, `known_hosts` host key, SSH vs Telnet, UFW `allow 22/tcp`, listening vs firewall allow, `journalctl -u ssh` (`Failed password`, `Accepted password`) |
 | 31 Oct 2026 | [Windows Lab #3 – NTFS permissions with `icacls` and PowerShell basics](labs/2026-10-31-windows-lab-3-ntfs-permissions-and-powershell.md) | ACL, inheritance (`/inheritance:r` vs `:d`), Read vs Modify, explicit DENY (`WD`, `AD`), `/reset`; `Get-Service`, `Get-WinEvent` 4625 (Logon Type 11, `consent.exe`), `Get-NetTCPConnection` → `Get-Process` |
