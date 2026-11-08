@@ -8,6 +8,7 @@ I use this repo to write up hands-on labs and summarise what I study, in my own 
 | Project | Summary |
 |---------|---------|
 | [Project 1 – Network & Firewall Lab](projects/network-and-firewall-lab/README.md) | Ubuntu VM + Mac home lab: HTTP and TCP, UFW firewall, subnetting/DHCP/DNS, ARP and DHCP/DNS packet captures, routing and traceroute (UDP, ICMP, TCP), UFW deny vs reject, SSH password and key login, SSH handshake and auth logs, with diagrams |
+| [Project 2 – SSH Authentication Log Parser](https://github.com/E26180/ssh-auth-log-parser) | Python command-line tool (separate repo): counts failed SSH password attempts and ranks source IPs, using `re`, `collections.Counter`, `sys.argv` and error handling; tested on synthetic logs and anonymised real Ubuntu journal lines |
 
 ## Labs
 
